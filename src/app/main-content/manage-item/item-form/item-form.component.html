@@ -1,0 +1,60 @@
+<div class="container">
+    <form id="item-form">
+
+        <!--Tip for the form -->
+        <h5>Enter item details here</h5>
+        <hr>
+
+        <!--Item ID-->
+        <div class="form-group">
+            <input id="itemId" type="text" class="form-control d-none" placeholder="Item ID">
+        </div>
+
+        <!--Code-->
+        <div class="form-group">
+            <input id="code" type="text" class="form-control" placeholder="Enter Code">
+        </div>
+
+        <!--Name-->
+        <div class="form-group">
+            <input id="name" type="text" class="form-control" placeholder="Enter Name">
+        </div>
+
+        <!--Price-->
+        <div class="form-group">
+            <input id="price" class="form-control" type="text" placeholder="Enter Price">
+        </div>
+
+        <!--Quantity-->
+        <div class="form-group">
+            <input id="quantity" class="form-control" type="text" placeholder="Enter Quantity">
+        </div>
+
+
+        <!--Image-->
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroupFileAddonItem">Upload</span>
+            </div>
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="itemImageUpload"
+                       aria-describedby="itemImageUpload">
+                <label class="custom-file-label" for="ItemImageUpload">Choose image for the item</label>
+            </div>
+        </div>
+
+        <!--Button-->
+        <div class="form-row">
+            <div class="col-6">
+                <button id="btn-submit-item" class="btn btn-primary btn-form" type="button">Submit</button>
+
+                <button id="btn-cancel-item" class="btn btn-secondary btn-form" type="button">Cancel</button>
+            </div>
+            <div class="col-6">
+                <button id="btn-delete-item" class="btn btn-danger btn-form" type="button">Delete</button>
+            </div>
+        </div>
+
+    </form>
+
+</div>

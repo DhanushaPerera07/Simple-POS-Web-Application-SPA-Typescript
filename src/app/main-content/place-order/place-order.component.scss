@@ -1,0 +1,79 @@
+/**
+ * @author : Dhanusha Perera
+ * @date : 12/14/20
+ **/
+
+#place-order {
+  display: none;
+
+  h1 {
+    color: black;
+  }
+
+  .item-image{
+    width: 4.5rem;
+  }
+
+  .setGreen{
+    color: #21aa93;
+    font-size: 1.4rem;
+  }
+
+  .fa-trash, .closeIcon{
+    color: #d9534f;
+  }
+
+  .editHover{
+    color: #0688fa;
+
+  }
+
+  .fa-trash, .editHover, .closeIcon{
+    font-size: 1.4rem;
+    margin-right: 1rem;
+    cursor: pointer;
+  }
+
+  //.editHover:hover{
+  //  font-size: 1.5rem;
+  //  transition: all 0.4s ease-in-out;
+  //}
+  //
+  //.trashHover:hover{
+  //  color: #da2d2d;
+  //  font-size: 1.5rem;
+  //  transition: all 0.4s ease-in-out;
+  //}
+
+  .setGreen:hover{
+    //color: #28a745;
+    font-size: 1.8rem;
+    transition: all 0.3s ease-in-out;
+  }
+
+
+  /* Cart styles */
+
+  .setBlue{
+    color: #0688fa;
+    font-size: 1.4rem;
+  }
+
+  .setBlue:hover{
+    font-size: 1.8rem;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+  }
+
+  .cart-input{
+    width: 50px;
+    margin: 0px 15px;
+  }
+
+  .closeIcon:hover{
+    font-size: 1.8rem;
+    transition: all 0.3s ease-in-out;
+  }
+
+
+}

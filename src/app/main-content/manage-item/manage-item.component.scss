@@ -1,0 +1,41 @@
+/**
+ * @author : Dhanusha Perera
+ * @date : 12/14/20
+ **/
+
+#manage-item {
+  display: none;
+
+  h1 {
+    color: black;
+  }
+
+  .item-image{
+    width: 4.5rem;
+  }
+
+  .fa-trash{
+    color: #d9534f;
+  }
+
+  .editHover{
+    color: #0688fa;
+  }
+
+  .fa-trash, .editHover{
+    font-size: 1.4rem;
+    margin-right: 1rem;
+    cursor: pointer;
+  }
+
+  //.editHover:hover{
+  //  font-size: 2rem;
+  //  transition: all 0.4s ease-in-out;
+  //}
+  //
+  //.trashHover:hover{
+  //  color: #da2d2d;
+  //  font-size: 2rem;
+  //  transition: all 0.4s ease-in-out;
+  //}
+}

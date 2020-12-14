@@ -1,0 +1,60 @@
+<div class="container">
+    <form id="customer-form">
+
+        <h5>Enter customer details here</h5>
+        <hr>
+
+        <!--Customer ID-->
+        <div class="form-group">
+            <input id="customerId" type="text" class="form-control d-none" placeholder="Customer ID">
+        </div>
+
+        <!--Name-->
+        <div class="form-group">
+            <input id="name" type="text" class="form-control" placeholder="Enter Name">
+        </div>
+
+        <!--Address-->
+        <div class="form-group">
+            <textarea id="address" class="form-control" rows="3" placeholder="Enter Address"></textarea>
+        </div>
+
+        <!--Email-->
+        <div class="form-group">
+            <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
+                   placeholder="Enter Email">
+        </div>
+
+        <!--Contact-->
+        <div class="form-group">
+            <input id="contact" class="form-control" type="text" placeholder="Contact No">
+        </div>
+
+
+        <!--Image-->
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroupFileAddonCustomer">Upload</span>
+            </div>
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="customerImageUpload"
+                       aria-describedby="customerImageUpload">
+                <label class="custom-file-label" for="customerImageUpload">Choose image for the customer</label>
+            </div>
+        </div>
+
+        <!--Button-->
+        <div class="form-row">
+            <div class="col-6">
+                <button id="btn-submit-customer" class="btn btn-primary btn-form" type="button">Submit</button>
+
+                <button id="btn-cancel-customer" class="btn btn-secondary btn-form" type="button">Cancel</button>
+            </div>
+            <div class="col-6">
+                <button id="btn-delete-customer" class="btn btn-danger btn-form" type="button">Delete</button>
+            </div>
+        </div>
+
+    </form>
+
+</div>

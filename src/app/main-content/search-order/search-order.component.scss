@@ -1,0 +1,130 @@
+/**
+ * @author : Dhanusha Perera
+ * @date : 12/14/20
+ **/
+
+#search-order {
+  display: none;
+
+  h1 {
+    color: black;
+  }
+
+  .item-image{
+    width: 4.5rem;
+  }
+
+  .setGreen{
+    color: #21aa93;
+    font-size: 1.4rem;
+  }
+
+  .fa-trash, .closeIcon{
+    color: #d9534f;
+  }
+
+  .editHover{
+    color: #0688fa;
+
+  }
+
+  .fa-trash, .editHover, .closeIcon{
+    font-size: 1.4rem;
+    margin-right: 1rem;
+    cursor: pointer;
+  }
+
+  //.editHover:hover{
+  //  font-size: 1.5rem;
+  //  transition: all 0.4s ease-in-out;
+  //}
+  //
+  //.trashHover:hover{
+  //  color: #da2d2d;
+  //  font-size: 1.5rem;
+  //  transition: all 0.4s ease-in-out;
+  //}
+
+  .setGreen:hover{
+    //color: #28a745;
+    font-size: 1.8rem;
+    transition: all 0.3s ease-in-out;
+  }
+
+
+  /* Cart styles */
+
+  .setBlue{
+    color: #0688fa;
+    font-size: 1.4rem;
+  }
+
+  .setBlue:hover{
+    font-size: 1.8rem;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+  }
+
+  .cart-input{
+    width: 50px;
+    margin: 0px 15px;
+  }
+
+  .closeIcon:hover{
+    font-size: 1.8rem;
+    transition: all 0.3s ease-in-out;
+  }
+
+
+
+  /* Search box styles */
+
+  $search-box-blue-color : #007bff;
+
+  .search {
+    width: 100%;
+    position: relative;
+    display: flex;
+  }
+
+  .searchTerm {
+    width: 100%;
+    border: 1px solid $search-box-blue-color;
+    border-right: none;
+    padding: 5px;
+    height: 50px;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+    color: #9DBFAF;
+  }
+
+  .searchTerm:focus{
+    color: $search-box-blue-color;
+    border: 2px solid $search-box-blue-color;
+  }
+
+  .searchButton {
+    width: 40px;
+    height: 50px;
+    border: 1px solid $search-box-blue-color;
+    background: $search-box-blue-color;
+    text-align: center;
+    color: #fff;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-size: 20px;
+  }
+
+  /*Resize the wrap to see the search bar change!*/
+  .wrap{
+    width: 30%;
+    position: relative;
+    top: 50%;
+    left: 0%;
+    //transform: translate(-50%, -50%);
+  }
+
+  /* ./Search box styles */
+
+
+}
