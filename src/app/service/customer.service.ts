@@ -31,12 +31,52 @@ import { Customer } from "../model/customer.model";
 
 /* Customers array */
 let customers: Array<Customer> = [];
-export function getAllCustomer(): Array<Customer> {
+
+export function getAllCustomer(): Promise<Array<Customer>> {
     // TODO: retrieve data from database
 
+    /* Promise returns here */
+    return  new Promise((resolve,reject)=>{
 
-    for (let i = 0; i < 50; i++) {
-        customers.push(new Customer(`C${i}`, "Kasun", "Galle","abc@gmail.com","077123456"));
+    // step 1 - initiate http request
+    let http = new XMLHttpRequest();
+
+    // step 2 - setting up the call back function
+    http.onreadystatechange = function () {
+        if (http.readyState == 4){
+            console.log("Hoooray customers la awa");
+            // console.log(http.responseText);
+            let dom = $(http.responseText);
+            // console.log(dom.find("table tbody").text());
+            dom.find("table tbody tr").each( (index,elm) => {
+                let id = $(elm).find("td").first().text();
+                let name = $(elm).find("td").eq(1).text();
+                let address = $(elm).find("td").eq(2).text();
+                let email = $(elm).find("td").eq(3).text();
+                let contact = $(elm).find("td").last().text();
+
+                // console.log(id,name,address,email,contact);
+                /* Add customer to the customers array */
+                customers.push(new Customer(id,name,address,email,contact));
+                // console.log("---------------------");
+            });
+            /* After things happening successfully, we gonna return the resolve function */
+            resolve(customers); // in here we pass the customers array with the resolve function
+        }
     }
-    return customers;
+
+    // step 3
+    http.open('GET','http://localhost:8080/pos/customers',true); // async = true
+
+    // step 4 - if we have to set headers
+
+    // step 5
+    http.send();
+
+
+    // for (let i = 0; i < 50; i++) {
+    //     customers.push(new Customer(`C${i}`, "Kasun", "Galle","abc@gmail.com","077123456"));
+    // }
+
+    });
 }
