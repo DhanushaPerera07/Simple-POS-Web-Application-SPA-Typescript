@@ -25,3 +25,8 @@
  * @author : Dhanusha Perera
  * @since : 15/12/2020
  **/
+
+export class Item {
+    constructor(public id: string, public name: string, public quantity: string, public unitPrice: string, public description: string) {
+    }
+}
