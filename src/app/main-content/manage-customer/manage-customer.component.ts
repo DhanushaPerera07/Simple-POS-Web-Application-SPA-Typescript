@@ -23,7 +23,7 @@ $("#manage-customer").append(html);
 /* GLOBAL VARIABLE */
 // ==========================================================================================
 
-export var customers = [];
+// export var customers = [];
 
 
 
