@@ -27,6 +27,6 @@
  **/
 
 export class Item {
-    constructor(public id: string, public name: string, public quantity: string, public unitPrice: string, public description: string) {
+    constructor(public id: string, public name: string, public quantity: number, public unitPrice: number, public description: string) {
     }
 }

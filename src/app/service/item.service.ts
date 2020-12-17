@@ -25,3 +25,55 @@
  * @author : Dhanusha Perera
  * @since : 15/12/2020
  **/
+
+import {Item} from "../model/item.model";
+
+/* Customers array */
+let items: Array<Item> = [];
+
+export function getAllItems(): Promise<Array<Item>> {
+
+    /* Promise returns here */
+    return new Promise((resolve, reject) => {
+
+        // step 1 - initiate http request
+        let http = new XMLHttpRequest();
+
+        // step 2 - setting up the call back function
+        http.onreadystatechange = function () {
+            if (http.readyState == 4) {
+                console.log("Hoooray items tika awa");
+                // console.log(http.responseText);
+                let dom = $(http.responseXML as any);
+
+                // console.log(http.responseXML);
+                if (dom) {
+                    dom.find("item").each((index, elm) => {
+                        let id = $(elm).find("id").text();
+                        let name = $(elm).find("name").text();
+                        let quantity = $(elm).find("quantity").text();
+                        let unitPrice = $(elm).find("unitPrice").text();
+                        let description = $(elm).find("description").text();
+
+                        /* Add item to the items array */
+                        items.push(new Item(id, name, +quantity, +unitPrice, description));
+                        // console.log("---------------------");
+                    });
+                    /* After things happening successfully, we gonna return the resolve function */
+                    resolve(items); // in here we pass the items array with the resolve function
+
+                }
+            }
+        }
+
+        // step 3
+        http.open('GET', 'http://localhost:8080/pos/items', true); // async = true
+
+        // step 4 - if we have to set headers
+
+        // step 5
+        http.send();
+
+
+    });
+}
