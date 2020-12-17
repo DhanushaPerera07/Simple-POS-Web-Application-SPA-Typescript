@@ -46,26 +46,29 @@ export function getAllCustomer(): Promise<Array<Customer>> {
         if (http.readyState == 4){
             console.log("Hooray customers la awa");
             // console.log(http.responseText);
-            let dom = $(http.responseXML as any);
+            // let dom = $(http.responseXML as any);
+            customers = JSON.parse(http.responseText);
 
             // console.log(http.responseXML);
-            if (dom){
-                dom.find("customer").each((index, elm) => {
-                    let id = $(elm).find("id").text();
-                    let name = $(elm).find("name").text();
-                    let address = $(elm).find("address").text();
-                    let email = $(elm).find("email").text();
-                    let contact = $(elm).find("contact").text();
+            // if (dom){
+            //     dom.find("customer").each((index, elm) => {
+            //         let id = $(elm).find("id").text();
+            //         let name = $(elm).find("name").text();
+            //         let address = $(elm).find("address").text();
+            //         let email = $(elm).find("email").text();
+            //         let contact = $(elm).find("contact").text();
+            //
+            //         // console.log(id,name,address,email,contact);
+            //         /* Add customer to the customers array */
+            //         customers.push(new Customer(id, name, address, email, contact));
+            //         // console.log("---------------------");
+            //     });
+            //     /* After things happening successfully, we gonna return the resolve function */
+            //     resolve(customers); // in here we pass the customers array with the resolve function
+            //
+            // }
 
-                    // console.log(id,name,address,email,contact);
-                    /* Add customer to the customers array */
-                    customers.push(new Customer(id, name, address, email, contact));
-                    // console.log("---------------------");
-                });
-                /* After things happening successfully, we gonna return the resolve function */
-                resolve(customers); // in here we pass the customers array with the resolve function
-
-            }
+            resolve(customers); // in here we pass the customers array with the resolve function
         }
     }
 
