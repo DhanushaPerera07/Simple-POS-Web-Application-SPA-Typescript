@@ -44,25 +44,13 @@ export function getAllItems(): Promise<Array<Item>> {
             if (http.readyState == 4) {
                 console.log("Hoooray items tika awa");
                 // console.log(http.responseText);
-                let dom = $(http.responseXML as any);
+                // let dom = $(http.responseXML as any);
+                // console.log(http.responseText);
+                items = JSON.parse(http.responseText); // get the JSON and make the JavaScript object
 
                 // console.log(http.responseXML);
-                if (dom) {
-                    dom.find("item").each((index, elm) => {
-                        let id = $(elm).find("id").text();
-                        let name = $(elm).find("name").text();
-                        let quantity = $(elm).find("quantity").text();
-                        let unitPrice = $(elm).find("unitPrice").text();
-                        let description = $(elm).find("description").text();
 
-                        /* Add item to the items array */
-                        items.push(new Item(id, name, +quantity, +unitPrice, description));
-                        // console.log("---------------------");
-                    });
-                    /* After things happening successfully, we gonna return the resolve function */
-                    resolve(items); // in here we pass the items array with the resolve function
-
-                }
+                resolve(items); // in here we pass the items array with the resolve function
             }
         }
 
