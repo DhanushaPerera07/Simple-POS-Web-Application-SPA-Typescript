@@ -26,6 +26,7 @@ $("#manage-customer").append(html);
 // ==========================================================================================
 
 // export var customers = [];
+let customerDataTable: any = null;
 
 
 // ==========================================================================================
@@ -75,9 +76,15 @@ function old_loadAllCustomers() {
 }
 
 /* async functions always Return Promise*/
-async function loadAllCustomers(){
+export async function loadAllCustomers() {
 
     let customers = await getAllCustomer();
+
+    /* DataTables */
+    if (customerDataTable) {
+        customerDataTable.destroy();
+        $('#tbl-customers tbody tr').remove();
+    }
 
     for (const customer of customers) {
         $('#tbl-customers tbody').append(`
@@ -96,8 +103,9 @@ async function loadAllCustomers(){
         `);
     } // for loop
 
-    /* DataTables */
-    ($('#tbl-customers') as any).DataTable({
+
+
+    customerDataTable = ($('#tbl-customers') as any).DataTable({
         "info": false,
         "searching": false,
         "lengthChange": false,

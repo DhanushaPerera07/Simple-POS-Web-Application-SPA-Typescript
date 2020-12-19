@@ -27,63 +27,86 @@
  * @since : 15/12/2020
  **/
 
-import { Customer } from "../model/customer.model";
+import {Customer} from "../model/customer.model";
 
 /* Customers array */
 let customers: Array<Customer> = [];
+let loaded = false;
 
 export function getAllCustomer(): Promise<Array<Customer>> {
     // TODO: retrieve data from database
 
     /* Promise returns here */
-    return  new Promise((resolve,reject)=>{
+    return new Promise((resolve, reject) => {
 
-    // step 1 - initiate http request
-    let http = new XMLHttpRequest();
+        if (!loaded) {
 
-    // step 2 - setting up the call back function
-    http.onreadystatechange = function () {
-        if (http.readyState == 4){
-            console.log("Hooray customers la awa");
-            // console.log(http.responseText);
-            // let dom = $(http.responseXML as any);
-            customers = JSON.parse(http.responseText);
+            // step 1 - initiate http request
+            let http = new XMLHttpRequest();
 
-            // console.log(http.responseXML);
-            // if (dom){
-            //     dom.find("customer").each((index, elm) => {
-            //         let id = $(elm).find("id").text();
-            //         let name = $(elm).find("name").text();
-            //         let address = $(elm).find("address").text();
-            //         let email = $(elm).find("email").text();
-            //         let contact = $(elm).find("contact").text();
-            //
-            //         // console.log(id,name,address,email,contact);
-            //         /* Add customer to the customers array */
-            //         customers.push(new Customer(id, name, address, email, contact));
-            //         // console.log("---------------------");
-            //     });
-            //     /* After things happening successfully, we gonna return the resolve function */
-            //     resolve(customers); // in here we pass the customers array with the resolve function
-            //
+            // step 2 - setting up the call back function
+            http.onreadystatechange = function () {
+                if (http.readyState == 4) {
+                    console.log("Hooray customers la awa");
+                    // console.log(http.responseText);
+                    // let dom = $(http.responseXML as any);
+                    customers = JSON.parse(http.responseText);
+
+                    loaded = true;
+                    resolve(customers); // in here we pass the customers array with the resolve function
+                }
+            }
+
+            // step 3
+            http.open('GET', 'http://localhost:8080/pos/customers', true); // async = true
+
+            // step 4 - if we have to set headers
+
+            // step 5
+            http.send();
+
+
+            // for (let i = 0; i < 50; i++) {
+            //     customers.push(new Customer(`C${i}`, "Kasun", "Galle","abc@gmail.com","077123456"));
             // }
 
-            resolve(customers); // in here we pass the customers array with the resolve function
+        } else {
+            resolve(customers);
         }
-    }
-
-    // step 3
-    http.open('GET','http://localhost:8080/pos/customers',true); // async = true
-
-    // step 4 - if we have to set headers
-
-    // step 5
-    http.send();
-
-
-    // for (let i = 0; i < 50; i++) {
-    //     customers.push(new Customer(`C${i}`, "Kasun", "Galle","abc@gmail.com","077123456"));
-    // }
 
     });
+}// getAllCustomer
+
+export function saveCustomer(customer: Customer): Promise<boolean> {
+
+    return new Promise((resolve, reject) => {
+
+        // step 1
+        let http = new XMLHttpRequest();
+
+        // step 2
+        http.onreadystatechange = () => {
+            if (http.readyState == 4) {
+                console.log(http.responseText);
+                // console.log(JSON.parse(http.responseText));
+                let success = JSON.parse(http.responseText);
+
+                if (success) {
+                    customers.unshift(customer);
+                }
+                resolve(success);
+            }
+        }
+
+        // step 3
+        http.open('POST', 'http://localhost:8080/pos/customers', true); // true ---> async
+
+        // step 4 - if we want to add something to header
+        http.setRequestHeader("Content-Type", "application/json");
+
+        // step 5 - if we want to add something to the body
+        http.send(JSON.stringify(customer));
+
+    });
+
 }

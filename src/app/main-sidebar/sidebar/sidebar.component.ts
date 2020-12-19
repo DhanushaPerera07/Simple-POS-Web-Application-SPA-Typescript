@@ -1,5 +1,6 @@
 import sideBar from "./sidebar.component.html";
 import sideBarStyle from "./sidebar.component.scss";
+import {loadAllCustomers} from "../../main-content/manage-customer/manage-customer.component";
 
 // handle app-brand-logo
 // var htmlSideBar = '<div id="sideBar">' + sideBar + '</div>';
@@ -79,4 +80,18 @@ function removeAllActiveClassFromSideNav() {
   $("#mainSideBar>li").each(function () {
     $(this).children("a").removeClass("active");
   });
+}
+
+
+export function showManageCustomerPage() {
+
+  hideAllMainContent();
+
+  /* Show manage customer */
+  $("#manage-customer").show();
+  // $("#customerForm").show();
+  $("#header-content-header").text("Manage Customer");
+  $($('#content-header').children()[1]).text("Manage Customer");
+  $("#btn-add").removeClass("d-none");
+
 }
