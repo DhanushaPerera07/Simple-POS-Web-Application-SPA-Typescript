@@ -22,24 +22,33 @@ $("#customerForm").append(html);
 /* Submit customer form data */
 $('#btn-submit-customer').click(async function () {
     console.log("Customer form submit btn clicked");
-    // TODO: handle submitting form data
+
     let customerId = <string>$("#customerId").val();
     let name = <string>$("#name").val();
     let address = <string>$("#address").val();
     let email = <string>$("#email").val();
     let contact = <string>$("#contact").val();
 
-    // if (customerId === "") {
-    let success = await saveCustomer(new Customer('', name, address, email, contact));
+    /* Frontend Validation */
+    if (address.trim().length == 0 ||
+        !email.match(/^(.+)@(.+)$/) ||
+        !contact.match(/\d{10}/)
+    ){
+        alert("Invalid input: check the given input");
+        return;
+    }
 
-    if (success) {
+        // if (customerId === "") {
+        await saveCustomer(new Customer('', name, address, email, contact));
+
+    try {
         alert("Customer inserted successfully...!");
         showManageCustomerPage();
         /* DataTables */
         // ($('#tbl-customers') as any).DataTable().destroy();
         loadAllCustomers();
 
-    } else {
+    } catch (error) {
         alert("Failed to save customer..!");
     }
     // }

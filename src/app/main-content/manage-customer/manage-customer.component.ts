@@ -10,7 +10,7 @@ import "../../../../node_modules/admin-lte/plugins/datatables/jquery.dataTables.
 import "../../../../node_modules/admin-lte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js";
 import "../../../../node_modules/admin-lte/plugins/datatables-responsive/js/dataTables.responsive.min.js";
 import "../../../../node_modules/admin-lte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js";
-import {getAllCustomer} from "../../service/customer.service";
+import {deleteCustomer, getAllCustomer} from "../../service/customer.service";
 import {Customer} from "../../model/customer.model";
 /* ./required imports for the DataTable */
 
@@ -33,6 +33,20 @@ let customerDataTable: any = null;
 /* Events and timers */
 // ==========================================================================================
 
+/* */
+$("#tbl-customers tbody").on('click', 'tr .fa-trash', async (event: Event) => {
+    if (confirm("Are you sure you want to delete this record?")){
+        let id = ($(event.target as any)).parents("tr").find("td:nth-child(2)").text();
+        console.log(id);
+        try {
+            await deleteCustomer(id);
+            alert("Customer has been deleted successfully !");
+            loadAllCustomers();
+        } catch (error) {
+            alert("Failed to delete the customer");
+        }
+    }
+});
 
 // ==========================================================================================
 /* functions */
@@ -104,13 +118,15 @@ export async function loadAllCustomers() {
     } // for loop
 
 
-
     customerDataTable = ($('#tbl-customers') as any).DataTable({
         "info": false,
         "searching": false,
         "lengthChange": false,
         "pageLength": 5,
+        "ordering": false
     });
+
+    customerDataTable.page(Math.ceil(customers.length / 5) - 1).draw('page');
 
     getAllCustomer().then(function (customers: Array<Customer>) {
         /* resolve function */

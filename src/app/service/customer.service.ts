@@ -34,14 +34,13 @@ let customers: Array<Customer> = [];
 let loaded = false;
 
 export function getAllCustomer(): Promise<Array<Customer>> {
-    // TODO: retrieve data from database
 
     /* Promise returns here */
     return new Promise((resolve, reject) => {
 
         if (!loaded) {
 
-            // step 1 - initiate http request
+            /*// step 1 - initiate http request
             let http = new XMLHttpRequest();
 
             // step 2 - setting up the call back function
@@ -63,12 +62,22 @@ export function getAllCustomer(): Promise<Array<Customer>> {
             // step 4 - if we have to set headers
 
             // step 5
-            http.send();
+            http.send();*/
 
+            /* Done using jQuery AJAX */
+            $.ajax({
+                method: "GET",
+                url: 'http://localhost:8080/pos/customers'
+            }).then((data)=>{
+                /* successful */
+                console.log("Hooray customers la awa");
+                customers = data; // jQuery takes it as JSON
+                loaded = true;
+                resolve(customers); // in here we pass the customers array with the resolve function
 
-            // for (let i = 0; i < 50; i++) {
-            //     customers.push(new Customer(`C${i}`, "Kasun", "Galle","abc@gmail.com","077123456"));
-            // }
+            }).fail(()=>{
+                /* something went wrong */
+            });
 
         } else {
             resolve(customers);
@@ -77,24 +86,24 @@ export function getAllCustomer(): Promise<Array<Customer>> {
     });
 }// getAllCustomer
 
-export function saveCustomer(customer: Customer): Promise<boolean> {
+export function saveCustomer(customer: Customer): Promise<void> {
 
     return new Promise((resolve, reject) => {
 
-        // step 1
+        /*// step 1
         let http = new XMLHttpRequest();
 
         // step 2
         http.onreadystatechange = () => {
             if (http.readyState == 4) {
-                console.log(http.responseText);
-                // console.log(JSON.parse(http.responseText));
-                let success = JSON.parse(http.responseText);
-
-                if (success) {
-                    customers.unshift(customer);
+                if (http.status == 201){
+                    console.log(http.responseText);
+                    customers.push(customer);
+                    resolve();
+                } else {
+                    reject();
                 }
-                resolve(success);
+
             }
         }
 
@@ -105,8 +114,62 @@ export function saveCustomer(customer: Customer): Promise<boolean> {
         http.setRequestHeader("Content-Type", "application/json");
 
         // step 5 - if we want to add something to the body
-        http.send(JSON.stringify(customer));
+        http.send(JSON.stringify(customer));*/
+
+        /* Done using jQuery AJAX */
+        $.ajax({
+            method: 'POST',
+            url: 'http://localhost:8080/pos/customers',
+            contentType: 'application/json',
+            data: JSON.stringify(customer)
+        }).then(()=>{
+            customers.push(customer);
+            resolve();
+        }).fail(()=>{
+            reject();
+        });
 
     });
 
+}// saveCustomer
+
+export function deleteCustomer(id: String): Promise<void> {
+    return new Promise((resolve,reject) =>{
+/*        // step 1
+        let http = new XMLHttpRequest();
+
+        // step 2
+        http.onreadystatechange = () => {
+            if (http.readyState == 4) {
+                if (http.status == 204){
+                    customers.splice(customers.findIndex((elm)=>elm.id===id),1)
+                    resolve();
+                } else {
+                    reject();
+                }
+
+            }
+        }
+
+        // step 3
+        http.open('DELETE', `http://localhost:8080/pos/customers?id=${id}`, true); // true ---> async
+
+        // step 4 - if we want to add something to header
+
+        // step 5 - if we want to add something to the body
+        http.send();*/
+
+        $.ajax({
+            method: "DELETE",
+            url: `http://localhost:8080/pos/customers?id=${id}`
+        }).then(()=>{
+            /* success - status code 2xx */
+            customers.splice(customers.findIndex((elm)=>elm.id===id),1)
+            resolve();
+        }).catch(()=>{
+            /* failed - status code 4xx and 5xx*/
+            reject();
+        })
+
+    });
 }
