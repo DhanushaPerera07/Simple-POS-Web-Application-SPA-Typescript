@@ -35,9 +35,27 @@ let totalAmount: number = 0; /* holds the total amount of the cart */
 let cartDataTable: any = null;  /* Datatable for the Cart Table*/
 let itemDataTable: any = null; /* DataTables for the Item Table */
 
+
+
+// ==========================================================================================
 /* Constants */
+// ==========================================================================================
+
 let SIMPLE_CART_TABLE_IDENTIFIER = "simpleCart";
 let ITEM_LIST_TABLE_IDENTIFIER = "itemList";
+
+/* EVENTS related constants */
+let CLICK_EVENT = "click";
+let CHANGE_EVENT = "click";
+
+/* Confirm messages related constants */
+let PLACE_ORDER_CONFIRM_MESSAGE = "Confirm this order. " +
+    "Are you sure you want to proceed? " +
+    "Click OK to proceed, " +
+    "Otherwise, Click Cancel";
+let ADD_TO_CART_CONFIRM_MESSAGE = "Are you sure you want to add this item to the cart?";
+let REMOVE_FROM_CART_CONFIRM_MESSAGE = "Are you sure you want to remove this item from the cart?";
+
 
 
 // ==========================================================================================
@@ -45,8 +63,8 @@ let ITEM_LIST_TABLE_IDENTIFIER = "itemList";
 // ==========================================================================================
 
 /** Add an item to the cart - event  */
-$("#itemList tbody").on('click', 'tr .fa-cart-arrow-down', async (event: Event) => {
-    if (confirm("Are you sure you want to add this item to the cart?")) {
+$("#itemList tbody").on(CLICK_EVENT, 'tr .fa-cart-arrow-down', async (event: Event) => {
+    if (confirm(ADD_TO_CART_CONFIRM_MESSAGE)) {
 
         let orderingUnitPriceForTheItem: string;
         let orderingQuantityForTheItem: any;
@@ -93,7 +111,7 @@ $("#itemList tbody").on('click', 'tr .fa-cart-arrow-down', async (event: Event) 
         // loadItemsToCartTable();
 
         /* Handle Ordering Quantity in the cart */
-        $('#simpleCart tbody').on('change', 'tr .cart-input', async (event: Event) => {
+        $('#simpleCart tbody').on(CHANGE_EVENT, 'tr .cart-input', async (event: Event) => {
 
             orderingQuantityForTheItem = ($(event.target as any)).parents("tr").find('.cart-input').val();
             orderingUnitPriceForTheItem = ($(event.target as any)).parents("tr").find('.itemUnitPrice').text();
@@ -126,8 +144,8 @@ $("#itemList tbody").on('click', 'tr .fa-cart-arrow-down', async (event: Event) 
 
 
 /** Remove selected item from the cart - event */
-$("#simpleCart tbody").on('click', 'tr .fa-times-circle', async (event: Event) => {
-    if (confirm("Are you sure you want to remove this item from the cart?")) {
+$("#simpleCart tbody").on(CLICK_EVENT, 'tr .fa-times-circle', async (event: Event) => {
+    if (confirm(REMOVE_FROM_CART_CONFIRM_MESSAGE)) {
         /* remove item from the cart */
 
         /* DataTables - cart table */
@@ -154,10 +172,17 @@ $("#simpleCart tbody").on('click', 'tr .fa-times-circle', async (event: Event) =
 //end - remove item
 
 
-/* button event on Place order button */
-$("#btnPlaceOrder").on("click", () => {
+/** Button event on Place order button */
+$("#btnPlaceOrder").on(CLICK_EVENT, () => {
     /* order should be placed when user click on place order button */
+    if (confirm(PLACE_ORDER_CONFIRM_MESSAGE)){
+        
+    }
 });
+
+
+
+
 
 // ==========================================================================================
 /* functions */
