@@ -26,11 +26,31 @@
  * @since : 03/01/2021
  **/
 
-import {Item} from "./item.model";
-import {Customer} from "./customer.model";
+/* Customers array */
+import {Order} from "../model/order.model";
+
+export let orders: Array<Order> = [];
+let loaded = false;
 
 
-export class Order {
-    constructor(public id: string, public customer: Customer, public itemList: Array<Item>, orderedDate: Date) {
-    }
-}
+/** Place / save an order */
+export function saveOrder(order: Order): Promise<void> {
+
+    return new Promise((resolve, reject) => {
+
+        /* Done using jQuery AJAX */
+        $.ajax({
+            method: 'POST',
+            url: 'http://localhost:8080/pos/place-orders',
+            contentType: 'application/json',
+            data: JSON.stringify(order)
+        }).then(() => {
+            orders.push(order);
+            resolve();
+        }).fail(() => {
+            reject();
+        });
+
+    });
+
+}// saveOrder
