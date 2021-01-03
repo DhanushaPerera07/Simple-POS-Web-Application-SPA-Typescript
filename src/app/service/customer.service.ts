@@ -164,7 +164,7 @@ export function deleteCustomer(id: String): Promise<void> {
             url: `http://localhost:8080/pos/customers?id=${id}`
         }).then(()=>{
             /* success - status code 2xx */
-            customers.splice(customers.findIndex((elm)=>elm.id===id),1)
+            customers.splice(customers.findIndex((elm)=>elm.id===id),1);
             resolve();
         }).catch(()=>{
             /* failed - status code 4xx and 5xx*/

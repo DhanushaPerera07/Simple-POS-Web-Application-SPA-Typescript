@@ -4,10 +4,7 @@
 <section>
     <div class="container">
         <!--Cart button-->
-        <button class="btn btn-primary" type="button">
-            No of item in cart <span class="badge">4</span>
-        </button>
-
+        <h4>Cart&nbsp;&nbsp;<span class="badge bg-primary"><span id="cartNoOfItems"></span>&nbsp;<i class="fa fa-cart-arrow-down" aria-hidden="true"></i></span></h4>
     </div>
 
     <!--<app-cart></app-cart>-->
@@ -22,63 +19,39 @@
                 <th scope="col">Photo</th>
                 <th scope="col">Code</th>
                 <th scope="col">Name</th>
-                <th scope="col">Price</th>
                 <th scope="col">Quantity</th>
+                <th scope="col">Unit Price</th>
+                <th scope="col">Description</th>
+                <th scope="col">Order Qty</th>
+                <th scope="col">Total Price</th>
                 <th scope="col">Option</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <th scope="row"><img class="item-image" src="/src/asset/avatar1.jpg" alt=""></th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>
-<!--                    <i class="fa fa-plus-square-o setBlue" aria-hidden="true"></i>-->
-                    <input class="cart-input" name="qty" type="number" min="1" max="99" value="1" title="Integers only">
-<!--                    <i class="fa fa-minus-square-o setBlue" aria-hidden="true"></i>-->
-                </td>
-                <td>
-                    <i class="fa fa-times-circle closeIcon" aria-hidden="true"></i>
-                </td>
-
-            </tr>
-            <tr>
-                <th scope="row"><img class="item-image" src="/src/asset/avatar1.jpg" alt=""></th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td>
-<!--                    <i class="fa fa-plus-square-o setBlue" aria-hidden="true"></i>-->
-                    <input class="cart-input" name="qty" type="number" min="1" max="99" value="1" title="Integers only">
-<!--                    <i class="fa fa-minus-square-o setBlue" aria-hidden="true"></i>-->
-                </td>
-                <td>
-                    <i class="fa fa-times-circle closeIcon" aria-hidden="true"></i>
-                </td>
-
-            </tr>
-            <tr>
-                <th scope="row"><img class="item-image" src="/src/asset/avatar1.jpg" alt=""></th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-                <td>
-<!--                    <i class="fa fa-plus-square-o setBlue" aria-hidden="true"></i>-->
-                    <input class="cart-input" name="qty" type="number" min="1" max="99" value="1" title="Integers only">
-<!--                    <i class="fa fa-minus-square-o setBlue" aria-hidden="true"></i>-->
-                </td>
-                <td>
-                    <i class="fa fa-times-circle closeIcon" aria-hidden="true"></i>
-                </td>
-
-            </tr>
-
             </tbody>
+            <tfoot>
+            <tr>
+                <td colspan = "9">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-4">
+                                <h6>Total Amount (LKR)</h6>
+                                <h6 id="cartTotal">0.00</h6></div>
+                            <div class="col-4"></div>
+                            <div class="col-4">
+                                <button type="button" id="btnPlaceOrder" class="btn btn-success" style="float: right" disabled="disabled">Place Order</button>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
         </table>
-        <!--Cart-->
+
+
     </div>
 </section>
+<!--Cart-->
 
 
 <hr>
@@ -101,46 +74,13 @@
                 <th scope="col">Photo</th>
                 <th scope="col">Code</th>
                 <th scope="col">Name</th>
-                <th scope="col">Price</th>
                 <th scope="col">Quantity</th>
+                <th scope="col">Price</th>
+                <th scope="col">Description</th>
                 <th scope="col">Option</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <th scope="row"><img class="item-image" src="/src/asset/avatar1.jpg" alt=""></th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>077123456</td>
-                <td>
-                    <i class="fa fa-cart-arrow-down setGreen" aria-hidden="true"></i>
-                </td>
-
-            </tr>
-            <tr>
-                <th scope="row"><img class="item-image" src="/src/asset/avatar1.jpg" alt=""></th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td>077123456</td>
-                <td>
-                    <i class="fa fa-cart-arrow-down setGreen" aria-hidden="true"></i>
-                </td>
-
-            </tr>
-            <tr>
-                <th scope="row"><img class="item-image" src="/src/asset/avatar1.jpg" alt=""></th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-                <td>077123456</td>
-                <td>
-                    <i class="fa fa-cart-arrow-down setGreen" aria-hidden="true"></i>
-                </td>
-
-            </tr>
-
             </tbody>
         </table>
     </div><!-- /.container-fluid -->
