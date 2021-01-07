@@ -23,14 +23,21 @@
  */
 /**
  * @author : Dhanusha Perera
- * @since : 03/01/2021
+ * @since : 04/01/2021
  **/
 
-import {Item} from "./item.model";
+import {Order} from "./order.model";
 import {Customer} from "./customer.model";
+import {Item} from "./item.model";
 
 
-export class Order {
-    constructor(public orderId: string, public customer: Customer, public itemList: Array<Item>,public orderedDate: Date) {
+export class OrderDetail extends Order {
+    constructor(public orderDetailId: string) {
+        super(
+            "",
+            new Customer("","","","",""),
+            new Array<Item>(),
+            new Date(Date.now())
+        );
     }
 }

@@ -12,7 +12,12 @@ import "../../../../node_modules/admin-lte/plugins/datatables-responsive/js/data
 import "../../../../node_modules/admin-lte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js";
 import {getAllItems} from "../../service/item.service";
 import {Item} from "../../model/item.model";
+import {OrderDetail} from "../../model/order-detail.model";
+import {Customer} from "../../model/customer.model";
+import {getAllCustomer} from "../../service/customer.service";
+import {saveOrder} from "../../service/order.service";
 /* ./required imports for the DataTable */
+
 
 // handle app-manage-item tag
 $("app-place-order").replaceWith('<div id="place-order">' + placeOrder + '</div>');
@@ -21,20 +26,23 @@ $("app-place-order").replaceWith('<div id="place-order">' + placeOrder + '</div>
 var html = '<style>' + style + '</style>';
 $("#place-order").append(html);
 
+
 // ==========================================================================================
 /* GLOBAL VARIABLE */
 // ==========================================================================================
 
 // export var placeOrders = [];
+let customerList: Array<Customer> = []; /* variable holds all the customers */
+let selectedCustomerId = 0; /* variable holds the selected customer */
 
 let itemInTheCart: Array<Item> = []; /* variable holds the items in the cart */
+let itemInTheCartToPlaceOrder: Array<Item> = []; /* variable holds cart items with user order qty */
 let itemList: Array<Item> = []; /* holds the items in the database */
 let totalAmount: number = 0; /* holds the total amount of the cart */
 
 /* Declare variables for DataTables */
 let cartDataTable: any = null;  /* Datatable for the Cart Table*/
 let itemDataTable: any = null; /* DataTables for the Item Table */
-
 
 
 // ==========================================================================================
@@ -46,7 +54,7 @@ let ITEM_LIST_TABLE_IDENTIFIER = "itemList";
 
 /* EVENTS related constants */
 let CLICK_EVENT = "click";
-let CHANGE_EVENT = "click";
+let CHANGE_EVENT = "change";
 
 /* Confirm messages related constants */
 let PLACE_ORDER_CONFIRM_MESSAGE = "Confirm this order. " +
@@ -55,7 +63,8 @@ let PLACE_ORDER_CONFIRM_MESSAGE = "Confirm this order. " +
     "Otherwise, Click Cancel";
 let ADD_TO_CART_CONFIRM_MESSAGE = "Are you sure you want to add this item to the cart?";
 let REMOVE_FROM_CART_CONFIRM_MESSAGE = "Are you sure you want to remove this item from the cart?";
-
+let CUSTOMER_NOT_SELECTED_ALERT_MESSAGE = "Please select the customer, first; that you want to place this order for.";
+let ORDERING_QUANTITY_INVALID_ALERT_MESSAGE = "Ordering Quantity of the item is invalid, please enter an integer";
 
 
 // ==========================================================================================
@@ -123,11 +132,11 @@ $("#itemList tbody").on(CLICK_EVENT, 'tr .fa-cart-arrow-down', async (event: Eve
             if (orderingQuantity > 0 && orderingQuantity <= Number(stockQuantityForTheItem)) {
                 ($(event.target as any)).parents("tr").find('.itemTotal').text((orderingUnitPrice * orderingQuantity).toFixed(2));
             } else {
-                alert("Ordering Quantity of the item is invalid, please enter an integer");
+                alert(ORDERING_QUANTITY_INVALID_ALERT_MESSAGE);
                 ($(event.target as any)).parents("tr").find('.cart-input').val(1);
             }
 
-            // calculateCartTotal();
+            calculateCartTotal();
         });
 
         /* DataTables for cart table */
@@ -174,21 +183,47 @@ $("#simpleCart tbody").on(CLICK_EVENT, 'tr .fa-times-circle', async (event: Even
 
 /** Button event on Place order button */
 $("#btnPlaceOrder").on(CLICK_EVENT, () => {
-    /* order should be placed when user click on place order button */
-    if (confirm(PLACE_ORDER_CONFIRM_MESSAGE)){
-        
+    if (selectedCustomerId && selectedCustomerId != 0) {
+        /* order should be placed when user click on place order button */
+        if (confirm(PLACE_ORDER_CONFIRM_MESSAGE)) {
+            let orderDetail = new OrderDetail("");
+            orderDetail.orderDetailId = "";
+            orderDetail.orderId = "";
+            orderDetail.customer = new Customer(selectedCustomerId.toString(), "", "", "", "");
+            prepareItemInTheCartToPlaceOrder();
+
+            if (itemInTheCartToPlaceOrder.length == 0) {
+                alert("Something went wrong in the item cart");
+                return;
+            }
+
+            orderDetail.itemList = itemInTheCartToPlaceOrder;
+            orderDetail.orderedDate = new Date(Date.now());
+
+            console.log(orderDetail);
+
+            saveOrder(orderDetail);
+
+        }
+    } else {
+        /* Customer is not selected for the order, prompt an alert message */
+        alert(CUSTOMER_NOT_SELECTED_ALERT_MESSAGE);
     }
+
 });
 
-
-
+/** Dropdown event when selecting a customer */
+$("#customerDropDown").on(CHANGE_EVENT, function () {
+    selectedCustomerId = Number($(this).val());
+    console.log($(this).val());
+});
 
 
 // ==========================================================================================
 /* functions */
 // ==========================================================================================
 
-/* async functions always Return Promise*/
+/* async functions always Return Promise */
 async function loadAllItems() {
 
     let items = await getAllItems();
@@ -236,22 +271,22 @@ async function loadAllItems() {
 /* Call loadAllItems function and load all items */
 loadAllItems();
 
+/** load all customers to display them in the drop down */
+async function loadAllCustomersToDropDown() {
+    /* Load all customers to display */
+    customerList = await getAllCustomer();
 
-// /* DataTables for item table */
-// ($('#simpleCart') as any).DataTable({
-//     "info": false,
-//     "searching": false,
-//     "lengthChange": false,
-//     "pageLength": 5,
-// });
+    if (customerList) {
+        $("#customerDropDown").append(`<option value=\"0" disabled selected>Choose the customer</option>`);
+        for (const customer of customerList) {
+            $("#customerDropDown").append(`<option value=\"${customer.id}">C${customer.id} - ${customer.name}</option>`);
+        }
+    }
 
-// /* DataTables for item table */
-// ($('#itemList') as any).DataTable({
-//     "info": false,
-//     "searching": false,
-//     "lengthChange": false,
-//     "pageLength": 5,
-// });
+}
+
+/* Call loadAllCustomersToDropDown function and load all customers */
+loadAllCustomersToDropDown();
 
 
 /** Load all items in the itemInTheCart array to cart table */
@@ -284,17 +319,17 @@ function loadItemToCartTable(item: Item) {
     $('#simpleCart tbody').last().append(`
               <tr>
                 <th scope="row"><img class="item-image"  src="/src/asset/iPhone12-1.jpg" alt=""></th>
-                <td>${item.id}</td>
-                <td>${item.name}</td>
+                <td class="itemId">${item.id}</td>
+                <td class="itemName">${item.name}</td>
                 <td class="itemQuantity">${item.quantity}</td>
                 <td class="itemUnitPrice">${item.unitPrice.toFixed(2)}</td>
-                <td>${item.description}</td>
+                <td class="itemDescription">${item.description}</td>
                 <td> 
                     <input class="cart-input" 
                     name="qty" type="number" 
                     min="1" max="${item.quantity}" 
                     value="1" 
-                    title="Integers only"> 
+                    title="Integers only">
                 </td> 
                 <td class="itemTotal">${item.unitPrice.toFixed(2)}</td>
                 <td> 
@@ -379,4 +414,16 @@ function changePlaceOrderButtonBehaviour() {
         $("#btnPlaceOrder").attr("disabled", 'disabled');
     }
 }
+
+function prepareItemInTheCartToPlaceOrder() {
+    $("#simpleCart tbody tr").each(function (elmNo, htmlElm) {
+        let orderingItemId = $(this).find("td:nth-child(2)").text();
+        let itemUnitPrice = $(this).find("td:nth-child(5)").text();
+        let orderingQuantity = $(this).find(".cart-input").val();
+
+        let item = new Item(orderingItemId.toString(), "", Number(orderingQuantity), Number(itemUnitPrice), "");
+        itemInTheCartToPlaceOrder.push(item);
+    });
+}
+
 

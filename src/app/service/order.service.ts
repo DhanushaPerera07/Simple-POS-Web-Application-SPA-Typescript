@@ -28,13 +28,17 @@
 
 /* Customers array */
 import {Order} from "../model/order.model";
+import {OrderDetail} from "../model/order-detail.model";
+import {Item} from "../model/item.model";
+import {Customer} from "../model/customer.model";
 
-export let orders: Array<Order> = [];
+export let orders: Array<OrderDetail> = [];
+export let ordersFromDatabase: Array<OrderDetail> = [];
 let loaded = false;
 
 
 /** Place / save an order */
-export function saveOrder(order: Order): Promise<void> {
+export function saveOrder(orderDetail: OrderDetail): Promise<void> {
 
     return new Promise((resolve, reject) => {
 
@@ -43,9 +47,9 @@ export function saveOrder(order: Order): Promise<void> {
             method: 'POST',
             url: 'http://localhost:8080/pos/place-orders',
             contentType: 'application/json',
-            data: JSON.stringify(order)
+            data: JSON.stringify(orderDetail)
         }).then(() => {
-            orders.push(order);
+            orders.push(orderDetail);
             resolve();
         }).fail(() => {
             reject();
@@ -54,3 +58,33 @@ export function saveOrder(order: Order): Promise<void> {
     });
 
 }// saveOrder
+
+
+export function getAllOrderDetails(): Promise<Array<OrderDetail>> {
+
+    /* Promise returns here */
+    return new Promise((resolve, reject) => {
+
+        if (!loaded) {
+
+            /* Done using jQuery AJAX */
+            $.ajax({
+                method: "GET",
+                url: 'http://localhost:8080/pos/orders'
+            }).then((data)=>{
+                /* successful */
+                console.log("Hooray orders tika awa");
+                ordersFromDatabase = data; // jQuery takes it as JSON
+                loaded = true;
+                resolve(ordersFromDatabase); // in here we pass the customers array with the resolve function
+
+            }).fail(()=>{
+                /* something went wrong */
+            });
+
+        } else {
+            resolve(ordersFromDatabase);
+        }
+
+    });
+}// getAllOrderDetails
